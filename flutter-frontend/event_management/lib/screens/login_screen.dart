@@ -1,0 +1,66 @@
+import 'package:event_management/screens/home_screen.dart';
+import 'package:event_management/services/api_service.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class LoginScreen extends StatelessWidget {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  LoginScreen({super.key});
+
+  void login(BuildContext context) async {
+    final data = await ApiService.login(
+      emailController.text,
+      passwordController.text,
+    );
+    if (data != null) {
+      if (kDebugMode) {
+        print(data['user']['id']);
+      }
+      final token = data['token'];
+      Map<String, dynamic> user = data['user'];
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', token);
+      prefs.setInt('userId', user['id']);
+      prefs.setString('role', user['role']);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => HomeScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Login failed')));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Login")),
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
+            TextField(
+              controller: emailController,
+              decoration: InputDecoration(labelText: 'Email'),
+            ),
+            TextField(
+              controller: passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => login(context),
+              child: Text("Login"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

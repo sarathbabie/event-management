@@ -1,0 +1,140 @@
+{
+	"info": {
+		"_postman_id": "6315951b-d6d0-4d4f-a6cc-cab1f19e65f6",
+		"name": "EventManagement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "32711516"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "admin@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Admin@123",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://localhost:8000/api/login"
+			},
+			"response": []
+		},
+		{
+			"name": "List-Events",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "6|IYd44nxxU7gF2qRPCe4aEtVlUSIQTZjczB4AVBdXaaff3ea1"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8000/api/events"
+			},
+			"response": []
+		},
+		{
+			"name": "Add-Event",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "7|Z9iHC5SnCRCLBkKX4s7N3DgPyzyqFQpl4OgGpNg574b5cb84"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "title",
+							"value": "New Game Launch",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Launching a new VR game",
+							"type": "text"
+						},
+						{
+							"key": "location",
+							"value": "Gaming Arena",
+							"type": "text"
+						},
+						{
+							"key": "start_date",
+							"value": "2025-07-01T10:00:00",
+							"type": "text"
+						},
+						{
+							"key": "end_date",
+							"value": "2025-07-01T12:00:00",
+							"type": "text"
+						},
+						{
+							"key": "status",
+							"value": "upcoming",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://localhost:8000/api/events"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete-Event",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "8|fKaR6yuVBqooEXrvNCQEN8HLgZOFDZFBAY7BwWkM1cc3409a"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:8000/api/events/21"
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
