@@ -21,7 +21,7 @@ class ApiService {
       Uri.parse('$baseUrl/events'),
       headers: {'Authorization': 'Bearer $token'},
     );
-    return (json.decode(res.body) as List)
+    return (json.decode(res.body)['data'] as List)
         .map((e) => Event.fromJson(e))
         .toList();
   }
@@ -29,7 +29,6 @@ class ApiService {
   static Future<bool> createEvent(Event event) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
-    int? userId = prefs.getInt('userId');
     final res = await http.post(
       Uri.parse('$baseUrl/events'),
       headers: {'Authorization': 'Bearer $token'},
@@ -40,7 +39,6 @@ class ApiService {
         'start_date': event.startDate.toIso8601String(),
         'end_date': event.endDate.toIso8601String(),
         'status': event.status,
-        'created_by': userId,
       },
     );
     return res.statusCode == 200;
@@ -50,7 +48,7 @@ class ApiService {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     final res = await http.delete(
-      Uri.parse('$baseUrl/events'),
+      Uri.parse('$baseUrl/events/$id'),
       headers: {'Authorization': 'Bearer $token'},
     );
     return res.statusCode == 204;

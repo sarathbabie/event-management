@@ -1,7 +1,7 @@
+import 'package:event_management/providers/auth_provider.dart';
 import 'package:event_management/screens/home_screen.dart';
-import 'package:event_management/services/api_service.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -11,14 +11,18 @@ class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
   void login(BuildContext context) async {
-    final data = await ApiService.login(
+    if (emailController.text.isEmpty && passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Please enter credentials')));
+    }
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    final data = await authProvider.login(
       emailController.text,
       passwordController.text,
     );
     if (data != null) {
-      if (kDebugMode) {
-        print(data['user']['id']);
-      }
       final token = data['token'];
       Map<String, dynamic> user = data['user'];
       final prefs = await SharedPreferences.getInstance();

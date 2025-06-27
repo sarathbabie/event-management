@@ -18,7 +18,6 @@ class EventProvider with ChangeNotifier {
   Future<void> fetchEvents() async {
     if (_isLoading || !_hasMore) return;
     _isLoading = true;
-    notifyListeners();
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     final url = Uri.parse('$baseUrl/events?page=$_page');
