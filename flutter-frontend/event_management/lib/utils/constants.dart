@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const themeColor = Color(0xFF2C2C2C);
-const primaryColor = Color.fromRGBO(245, 158, 11, 1);
+const primaryColor = Color.fromRGBO(17, 103, 79, 1);
 const secondaryColor = Color.fromARGB(255, 110, 108, 105);
 const contentColorLightTheme = Color(0xFF1D1D35);
 const contentColor = Color(0xFFF5FCF9);
@@ -12,7 +12,7 @@ const defaultPadding = 20.0;
 
 // const String BaseUrl = '';
 
-String baseUrl = 'http://192.168.137.147:8000/api';
+String baseUrl = 'http://192.168.137.169:8000/api';
 
 Map<String, String> headers = {};
 

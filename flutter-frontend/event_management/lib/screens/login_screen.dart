@@ -1,5 +1,6 @@
 import 'package:event_management/providers/auth_provider.dart';
 import 'package:event_management/screens/home_screen.dart';
+import 'package:event_management/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,18 +44,31 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(defaultPadding),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text('Login', style: TextStyle(color: primaryColor, fontSize: 22)),
+            SizedBox(height: 20),
             TextField(
               controller: emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
             ),
+            SizedBox(height: 20),
             TextField(
               controller: passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
               obscureText: true,
             ),
             SizedBox(height: 20),

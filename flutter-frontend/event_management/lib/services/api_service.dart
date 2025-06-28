@@ -26,7 +26,7 @@ class ApiService {
         .toList();
   }
 
-  static Future<bool> createEvent(Event event) async {
+  static Future<String?> createEvent(Event event) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     final res = await http.post(
@@ -41,7 +41,10 @@ class ApiService {
         'status': event.status,
       },
     );
-    return res.statusCode == 200;
+    if (res.statusCode == 201) {
+      return 'success';
+    }
+    return null;
   }
 
   static Future<bool> deleteEvent(int id) async {

@@ -1,6 +1,7 @@
 import 'package:event_management/models/event.dart';
-import 'package:event_management/services/api_service.dart';
+import 'package:event_management/providers/event_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EventFormScreen extends StatefulWidget {
   const EventFormScreen({super.key});
@@ -28,6 +29,13 @@ class _EventFormState extends State<EventFormScreen> {
       ).showSnackBar(SnackBar(content: Text("Please complete all fields.")));
       return;
     }
+    if (endDate != null && startDate!.isAfter(endDate!)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Start date must be before end date")),
+      );
+      return;
+    }
+    final eventProvider = Provider.of<EventProvider>(context, listen: false);
 
     final event = Event(
       title: title,
@@ -38,8 +46,14 @@ class _EventFormState extends State<EventFormScreen> {
       status: status,
     );
 
-    await ApiService.createEvent(event);
-    Navigator.pop(context);
+    final error = await eventProvider.createEvent(event);
+    if (error == null) {
+      Navigator.pop(context); // return to event list
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error)));
+    }
   }
 
   Future<void> _pickDate(bool isStart) async {
@@ -47,7 +61,7 @@ class _EventFormState extends State<EventFormScreen> {
     final picked = await showDatePicker(
       context: context,
       initialDate: initial,
-      firstDate: DateTime(2023),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2030),
     );
     if (picked != null) {
@@ -72,16 +86,33 @@ class _EventFormState extends State<EventFormScreen> {
           child: ListView(
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'Title'),
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 onChanged: (val) => title = val,
                 validator: (val) => val!.isEmpty ? 'Title required' : null,
               ),
+              SizedBox(height: 20),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 onChanged: (val) => description = val,
               ),
+              SizedBox(height: 20),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Location'),
+                decoration: InputDecoration(
+                  labelText: 'Location',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 onChanged: (val) => location = val,
               ),
               SizedBox(height: 10),
@@ -96,14 +127,21 @@ class _EventFormState extends State<EventFormScreen> {
               Text(
                 "End Date: ${endDate?.toLocal().toString().split(' ')[0] ?? 'Not selected'}",
               ),
+
+              SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () => _pickDate(false),
                 child: Text("Select End Date"),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 value: status,
-                decoration: InputDecoration(labelText: 'Status'),
+                decoration: InputDecoration(
+                  labelText: 'Status',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 items: ['upcoming', 'ongoing', 'completed']
                     .map(
                       (e) => DropdownMenuItem(

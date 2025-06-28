@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.logout),
           ),
         ],
-        title: Text("Your Events"),
+        title: Text("Events"),
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -59,19 +59,27 @@ class _HomeScreenState extends State<HomeScreen> {
           itemBuilder: (ctx, i) {
             if (i < provider.events.length) {
               final event = provider.events[i];
-              return ListTile(
-                title: Text(event.title),
-                subtitle: Text(event.startDate.toString()),
-                trailing: role == 'admin'
-                    ? IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () async {
-                          deleteEvent(event.id);
-                          provider.reset();
-                          await provider.fetchEvents();
-                        },
-                      )
-                    : null,
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: ListTile(
+                    title: Text(event.title),
+                    subtitle: Text(event.startDate.toString()),
+                    trailing: role == 'admin'
+                        ? IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () async {
+                              deleteEvent(event.id);
+                              provider.reset();
+                              await provider.fetchEvents();
+                            },
+                          )
+                        : null,
+                  ),
+                ),
               );
             } else {
               return Center(

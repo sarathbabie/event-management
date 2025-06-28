@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:event_management/models/event.dart';
+import 'package:event_management/services/api_service.dart';
 import 'package:event_management/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -37,6 +38,16 @@ class EventProvider with ChangeNotifier {
 
     _isLoading = false;
     notifyListeners();
+  }
+
+  Future<String?> createEvent(Event event) async {
+    final result = await ApiService.createEvent(event);
+    if (result != null) {
+      notifyListeners();
+      return null;
+    } else {
+      return "Something went wrong!";
+    }
   }
 
   void reset() {
